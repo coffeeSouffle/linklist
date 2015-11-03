@@ -4,177 +4,182 @@ import "fmt"
 
 type Node struct {
 	x         int
-	pre, next *Node
+	Pre, Next *Node
 }
 
 type LinkList struct {
-	hptr *Node
-	pre  *Node
-	cnt  int
+	Hptr *Node
+	Pre  *Node
+	Cnt  int
 }
 
-func (ll *LinkList) add(num ...int) {
+func (ll *LinkList) Add(num ...int) {
 
 	// when head is null
 	if len(num) == 1 {
-		(*ll).push(num[0])
+		(*ll).Push(num[0])
 		return
 	}
 
-	if (*ll).cnt < num[1] {
+	if (*ll).Cnt < num[1] {
 		return
 	}
 
-	node := Node{x: num[0], pre: nil, next: nil}
-	(*ll).cnt++
+	node := Node{x: num[0], Pre: nil, Next: nil}
+	(*ll).Cnt++
 
 	if num[1] == 0 {
-		node.next = (*ll).hptr
-		(*ll).hptr.pre = &node
-		(*ll).hptr = &node
+		node.Next = (*ll).Hptr
+		(*ll).Hptr.Pre = &node
+		(*ll).Hptr = &node
 		return
 	}
 
-	nextPtr := (*ll).hptr
+	NextPtr := (*ll).Hptr
 	for i := 1; i < num[1]; i++ {
-		nextPtr = (*nextPtr).next
+		NextPtr = (*NextPtr).Next
 	}
 
-	node.pre = nextPtr
-	node.next = nextPtr.next
-	nextPtr.next = &node
+	node.Pre = NextPtr
+	node.Next = NextPtr.Next
+	NextPtr.Next = &node
 
-	if node.next == nil {
-		(*ll).pre = &node
+	if node.Next == nil {
+		(*ll).Pre = &node
 	}
 }
 
-func (ll *LinkList) remove(index int) {
+func (ll *LinkList) Remove(index int) {
 
 	if index == 0 {
-		(*ll).pop()
+		(*ll).Pop()
 		return
 	}
 
-	if index == (*ll).cnt {
-		(*ll).dequeue()
+	if index == (*ll).Cnt {
+		(*ll).Dequeue()
 		return
 	}
 
-	if (*ll).cnt < index {
+	if (*ll).Cnt < index {
 		return
 	}
 
-	ptr := (*ll).hptr
+	ptr := (*ll).Hptr
 	for i := 1; i < index; i++ {
-		ptr = (*ptr).next
+		ptr = (*ptr).Next
 	}
 
-	(*ptr).next.pre = (*ptr).pre
-	(*ptr).pre.next = (*ptr).next
-	(*ll).cnt--
+	(*ptr).Next.Pre = (*ptr).Pre
+	(*ptr).Pre.Next = (*ptr).Next
+	(*ll).Cnt--
 }
 
-func (ll *LinkList) push(num int) {
+func (ll *LinkList) Push(num int) {
 
-	if (*ll).hptr == nil {
-		(*ll).hptr = &Node{x: num, pre: nil, next: nil}
-		(*ll).pre = (*ll).hptr
-		(*ll).cnt++
+	if (*ll).Hptr == nil {
+		(*ll).Hptr = &Node{x: num, Pre: nil, Next: nil}
+		(*ll).Pre = (*ll).Hptr
+		(*ll).Cnt++
 		return
 	}
 
-	node := Node{x: num, pre: (*ll).pre, next: nil}
-	(*ll).pre.next = &node
-	(*ll).pre = &node
-	(*ll).cnt++
+	node := Node{x: num, Pre: (*ll).Pre, Next: nil}
+	(*ll).Pre.Next = &node
+	(*ll).Pre = &node
+	(*ll).Cnt++
 }
 
-func (ll *LinkList) pop() {
+func (ll *LinkList) Pop() {
 
-	if (*ll).pre == nil {
+	if (*ll).Pre == nil {
 		return
 	}
 
-	if (*ll).pre.pre == nil {
-		(*ll).pre = nil
-		(*ll).hptr = nil
+	if (*ll).Pre.Pre == nil {
+		(*ll).Pre = nil
+		(*ll).Hptr = nil
 	} else {
-		(*ll).pre = (*ll).pre.pre
-		(*ll).pre.next = nil
+		(*ll).Pre = (*ll).Pre.Pre
+		(*ll).Pre.Next = nil
 	}
-	(*ll).cnt--
+	(*ll).Cnt--
 }
 
-func (ll *LinkList) enqueue(num int) {
-	(*ll).push(num)
+func (ll *LinkList) Enqueue(num int) {
+	(*ll).Push(num)
 }
 
-func (ll *LinkList) dequeue() {
+func (ll *LinkList) Dequeue() {
 
-	if (*ll).hptr == nil {
+	if (*ll).Hptr == nil {
 		return
 	}
 
-	(*ll).hptr = (*ll).hptr.next
-	(*ll).cnt--
+	(*ll).Hptr = (*ll).Hptr.Next
+	(*ll).Cnt--
 }
 
-func (ll *LinkList) show() {
-	node := (*ll).hptr
+func (ll *LinkList) Show() {
+	node := (*ll).Hptr
 
 	if node == nil {
 		fmt.Println(nil)
 		return
 	}
 
-	for i := 0; i <= (*ll).cnt; i++ {
+	for i := 0; i <= (*ll).Cnt; i++ {
 		fmt.Println(node.x)
 
-		if node.next == nil {
+		if node.Next == nil {
 			break
 		}
 
-		node = (*node).next
+		node = (*node).Next
 	}
 }
 
-func (ll *LinkList) getCount() int {
-	return (*ll).cnt
+func (ll *LinkList) GetCount() int {
+	return (*ll).Cnt
 }
 
-func (ll *LinkList) get(index int) (int, string) {
+func (ll *LinkList) Get(index int) (int, string) {
 
-	if (*ll).cnt <= index {
+	if (*ll).Cnt <= index {
 		return 0, "error"
 	}
 
-	ptr := (*ll).hptr
+	ptr := (*ll).Hptr
 	for i := 1; i <= index; i++ {
-		ptr = (*ptr).next
+		ptr = (*ptr).Next
 	}
 
 	return ptr.x, "success"
 }
 
-func (ll *LinkList) getAll() ([]int, string) {
+func (ll *LinkList) GetAll() ([]int, string) {
 
-	if (*ll).cnt == 0 {
+	if (*ll).Cnt == 0 {
 		return []int{}, "success"
 	}
 
-	num := make([]int, (*ll).cnt)
-	node := (*ll).hptr
+	num := make([]int, (*ll).Cnt)
+	node := (*ll).Hptr
 
-	for i := 0; i <= (*ll).cnt; i++ {
+	for i := 0; i <= (*ll).Cnt; i++ {
 		num[i] = node.x
 
-		if node.next == nil {
+		if node.Next == nil {
 			break
 		}
 
-		node = (*node).next
+		node = (*node).Next
 	}
 
 	return num, "success"
+}
+
+// construct
+func LL() LinkList {
+	return LinkList{}
 }
