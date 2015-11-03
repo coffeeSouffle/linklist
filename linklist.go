@@ -3,8 +3,8 @@ package linklist
 import "fmt"
 
 type Node struct {
-	x         int
 	Pre, Next *Node
+	Value     interface{}
 }
 
 type LinkList struct {
@@ -13,41 +13,41 @@ type LinkList struct {
 	Cnt  int
 }
 
-func (ll *LinkList) Add(num ...int) {
+// func (ll *LinkList) Add(num ...int) {
 
-	// when head is null
-	if len(num) == 1 {
-		(*ll).Push(num[0])
-		return
-	}
+// 	// when head is null
+// 	if len(num) == 1 {
+// 		(*ll).Push(num[0])
+// 		return
+// 	}
 
-	if (*ll).Cnt < num[1] {
-		return
-	}
+// 	if (*ll).Cnt < num[1] {
+// 		return
+// 	}
 
-	node := Node{x: num[0], Pre: nil, Next: nil}
-	(*ll).Cnt++
+// 	node := Node{x: num[0], Pre: nil, Next: nil}
+// 	(*ll).Cnt++
 
-	if num[1] == 0 {
-		node.Next = (*ll).Hptr
-		(*ll).Hptr.Pre = &node
-		(*ll).Hptr = &node
-		return
-	}
+// 	if num[1] == 0 {
+// 		node.Next = (*ll).Hptr
+// 		(*ll).Hptr.Pre = &node
+// 		(*ll).Hptr = &node
+// 		return
+// 	}
 
-	NextPtr := (*ll).Hptr
-	for i := 1; i < num[1]; i++ {
-		NextPtr = (*NextPtr).Next
-	}
+// 	NextPtr := (*ll).Hptr
+// 	for i := 1; i < num[1]; i++ {
+// 		NextPtr = (*NextPtr).Next
+// 	}
 
-	node.Pre = NextPtr
-	node.Next = NextPtr.Next
-	NextPtr.Next = &node
+// 	node.Pre = NextPtr
+// 	node.Next = NextPtr.Next
+// 	NextPtr.Next = &node
 
-	if node.Next == nil {
-		(*ll).Pre = &node
-	}
-}
+// 	if node.Next == nil {
+// 		(*ll).Pre = &node
+// 	}
+// }
 
 func (ll *LinkList) Remove(index int) {
 
@@ -75,16 +75,16 @@ func (ll *LinkList) Remove(index int) {
 	(*ll).Cnt--
 }
 
-func (ll *LinkList) Push(num int) {
+func (ll *LinkList) Push(v interface{}) {
 
 	if (*ll).Hptr == nil {
-		(*ll).Hptr = &Node{x: num, Pre: nil, Next: nil}
+		(*ll).Hptr = &Node{Value: v, Pre: nil, Next: nil}
 		(*ll).Pre = (*ll).Hptr
 		(*ll).Cnt++
 		return
 	}
 
-	node := Node{x: num, Pre: (*ll).Pre, Next: nil}
+	node := Node{Value: v, Pre: (*ll).Pre, Next: nil}
 	(*ll).Pre.Next = &node
 	(*ll).Pre = &node
 	(*ll).Cnt++
@@ -106,8 +106,8 @@ func (ll *LinkList) Pop() {
 	(*ll).Cnt--
 }
 
-func (ll *LinkList) Enqueue(num int) {
-	(*ll).Push(num)
+func (ll *LinkList) Enqueue(v interface{}) {
+	(*ll).Push(v)
 }
 
 func (ll *LinkList) Dequeue() {
@@ -129,7 +129,7 @@ func (ll *LinkList) Show() {
 	}
 
 	for i := 0; i <= (*ll).Cnt; i++ {
-		fmt.Println(node.x)
+		fmt.Println(node.Value)
 
 		if node.Next == nil {
 			break
@@ -143,7 +143,7 @@ func (ll *LinkList) GetCount() int {
 	return (*ll).Cnt
 }
 
-func (ll *LinkList) Get(index int) (int, string) {
+func (ll *LinkList) Get(index int) (interface{}, string) {
 
 	if (*ll).Cnt <= index {
 		return 0, "error"
@@ -154,20 +154,20 @@ func (ll *LinkList) Get(index int) (int, string) {
 		ptr = (*ptr).Next
 	}
 
-	return ptr.x, "success"
+	return ptr.Value, "success"
 }
 
-func (ll *LinkList) GetAll() ([]int, string) {
+func (ll *LinkList) GetAll() ([]interface{}, string) {
 
 	if (*ll).Cnt == 0 {
-		return []int{}, "success"
+		return make([]interface{}, 0), "success"
 	}
 
-	num := make([]int, (*ll).Cnt)
+	num := make([]interface{}, (*ll).Cnt)
 	node := (*ll).Hptr
 
 	for i := 0; i <= (*ll).Cnt; i++ {
-		num[i] = node.x
+		num[i] = node.Value
 
 		if node.Next == nil {
 			break
